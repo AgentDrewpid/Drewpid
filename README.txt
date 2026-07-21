@@ -1,19 +1,18 @@
-DREWPID PRIVATE INVESTIGATIONS DEPARTMENT — V16
+DREWPID PRIVATE INVESTIGATIONS DEPARTMENT — V24
 
-ADDED
------
-- Call Agent Drew interactive phone page
-- Old-school brick mobile design
-- Fully clickable keypad
-- Access number: 5598 6546
-- Correct number triggers the supplied Agent Drew audio recording
-- Incorrect numbers display a connection-refused message
-- Audio embedded directly inside index.html
+PHONE NUMBERS
+-------------
+5598 6546
+- Agent Drew recording
 
-EXISTING FEATURES RETAINED
---------------------------
-- Archive intro and music
-- Agent Drew simulated AI
-- Ethan Frank hidden image trigger
-- U4ia hidden response
-- Cracking Eggs PIN: 6174
+0431 081 154
+- Muddo answering machine
+
+0434 123 315
+- DrewSwear recording
+
+0422 278 023
+- Displays the hidden TLJ image, then fades it away
+
+ANY OTHER NUMBER
+- Call cannot be completed recording
