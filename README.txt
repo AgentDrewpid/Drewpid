@@ -1,18 +1,13 @@
-DREWPID PRIVATE INVESTIGATIONS DEPARTMENT — V24
+DREWPID PRIVATE INVESTIGATIONS DEPARTMENT — V29
 
-PHONE NUMBERS
--------------
-5598 6546
-- Agent Drew recording
+PERSONNEL RECORD HIDDEN INTERACTIONS
+------------------------------------
+1. Click the Drewpid Case Notes pad:
+   - note slides upward
+   - reveal sound plays
+   - displays Cracking Eggs Access Code 6174
 
-0431 081 154
-- Muddo answering machine
+2. Click beneath Agent Drew's belt:
+   - plays the uploaded "don't touch what you can't afford, sweet cheeks" audio
 
-0434 123 315
-- DrewSwear recording
-
-0422 278 023
-- Displays the hidden TLJ image, then fades it away
-
-ANY OTHER NUMBER
-- Call cannot be completed recording
+All existing website features remain intact.
