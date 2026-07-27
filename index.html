@@ -2084,6 +2084,19 @@
   }
 }
 
+
+
+/* Mobile layout corrections: keep headings and personnel details before their visuals. */
+@media (max-width: 760px) {
+  .phone-stage .phone-copy { order: 1; }
+  .phone-stage .brick-phone { order: 2; }
+}
+
+@media (max-width: 820px) {
+  .agent-card .agent-copy { order: 1; }
+  .agent-card .agent-image { order: 2; }
+}
+
 </style>
 </head>
 <body>
@@ -3544,6 +3557,19 @@ The department prefers silence to invention. Ask again using a case name, suspec
   const drawDrewSaveDialog = document.getElementById('drawDrewSaveDialog');
   const drawDrewFilename = document.getElementById('drawDrewFilename');
   let drawDrewCurrentFileId = null;
+  let backgroundWasPlayingBeforePasswordVideo = false;
+
+  function resumeBackgroundAfterPasswordVideo() {
+    const music = document.getElementById('backgroundAudio');
+    const control = document.getElementById('soundControl');
+    if (!backgroundWasPlayingBeforePasswordVideo || !music || !music.paused) return;
+    const attempt = music.play();
+    if (attempt && typeof attempt.then === 'function') {
+      attempt.then(() => {
+        if (control) control.textContent = 'Sound: On';
+      }).catch(() => {});
+    }
+  }
 
   const recycleWindow = document.getElementById('recycleWindow');
   const documentWindow = document.getElementById('documentWindow');
@@ -3606,9 +3632,12 @@ The department prefers silence to invention. Ask again using a case name, suspec
     magicWordOverlay.setAttribute('aria-hidden','true');
     message.textContent = '';
     password.value = '';
+    resumeBackgroundAfterPasswordVideo();
     setTimeout(() => password.focus(), 80);
   }
   function showPasswordVideo() {
+    const music = document.getElementById('backgroundAudio');
+    backgroundWasPlayingBeforePasswordVideo = Boolean(music && !music.paused);
     magicWordOverlay.classList.add('open');
     magicWordOverlay.setAttribute('aria-hidden','false');
     magicWordVideo.currentTime = 0;
