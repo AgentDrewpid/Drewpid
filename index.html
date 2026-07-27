@@ -3660,6 +3660,11 @@ The department prefers silence to invention. Ask again using a case name, suspec
     const entered = password.value.trim().toLowerCase();
     if (entered === 'bosco') {
       message.textContent = 'ACCESS GRANTED';
+      const foundSecretSound = document.getElementById('pongSecretSound');
+      if (foundSecretSound) {
+        foundSecretSound.currentTime = 0;
+        foundSecretSound.play().catch(() => {});
+      }
       setTimeout(() => {
         hideDesktopWindows();
         show(desktop);
