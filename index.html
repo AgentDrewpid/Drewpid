@@ -1936,6 +1936,22 @@
   filter:drop-shadow(1px 1px 0 #333);
 }
 
+
+.supplies-glyph{width:40px;height:32px;margin-top:5px;background:#b88a4c;border:3px outset #d4b27a;box-sizing:border-box}
+.supplies-glyph::before{content:"P.I.D.";position:absolute;left:4px;right:4px;top:8px;padding:2px 0;background:#eee8d8;border:1px solid #5e4a31;color:#111;font:bold 8px "Courier New",monospace;text-align:center;text-shadow:none}
+.win95-icon.desktop-free{position:absolute;margin:0;touch-action:none;user-select:none;z-index:2}
+.win95-icon.desktop-free.dragging{opacity:.82;z-index:70}
+.supplies-window{width:min(650px,92%);min-height:360px}
+.supplies-body{padding:14px;background:#dfdfdf;max-height:470px;overflow:auto}
+.supplies-heading{margin-bottom:12px;padding:6px 8px;border:2px inset #eee;background:#fff;font:bold 12px "Courier New",monospace;letter-spacing:.08em}
+.supplies-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.supply-item{display:grid;grid-template-columns:76px 1fr;grid-template-rows:1fr auto;gap:7px 10px;align-items:center;min-height:128px;padding:10px;border:2px outset #fff;background:#c0c0c0}
+.supply-item strong{font-size:13px}
+.supply-icon{grid-row:1 / span 2;width:68px;height:68px;display:grid;place-items:center;background:#202020;border:3px inset #eee;color:#fff;font:bold 11px "Courier New",monospace;letter-spacing:.05em}
+.mug-supply{border-radius:3px 3px 15px 3px}.pin-supply{border-radius:50%;background:#a78a32;color:#111}.art-supply{background:#7e171d}
+.supply-buy{justify-self:start;font-size:10px;padding:4px 8px}
+@media(max-width:620px){.supplies-window{left:6px!important;right:6px!important;top:6px!important;width:auto!important;max-height:calc(100% - 48px);transform:none!important}.supplies-grid{grid-template-columns:1fr}.supplies-body{max-height:calc(100vh - 190px)}.supply-item{min-height:104px}}
+
 .folder-glyph{background:#f0d35a;border:2px outset #fff59b;margin-top:7px}
 .folder-glyph:before{content:"";position:absolute;left:2px;top:-8px;width:20px;height:8px;background:#f0d35a;border:2px outset #fff59b;border-bottom:0}
 .video-glyph{background:#c0c0c0;border:2px outset #fff;margin-top:4px}
@@ -2362,7 +2378,6 @@
         <a href="#agent">Agent Drew</a>
         <a href="#cases">Case Files</a>
         <a href="#computer">Computer</a>
-        <a href="#shop">Shop</a>
         <a href="#enquiries">Enquiries</a>
 <a href="#call-agent">Call Agent Drew</a>
 
@@ -2676,30 +2691,6 @@
 </section>
 
 
-<section id="shop" class="shop-section">
-  <div class="wrap">
-    <div class="section-heading reveal">
-      <div class="kicker">Department issue // civilian release</div>
-      <h2>DrewPID Shop</h2>
-      <p class="copy">Official field equipment, suspicious apparel and objects of questionable investigative value.</p>
-    </div>
-    <div class="shop-grid reveal">
-      <article class="shop-card">
-        <div class="shop-art shirt-art" aria-hidden="true"><span>P.I.D.</span></div>
-        <div class="shop-copy"><div class="shop-file">ITEM 001</div><h3>P.I.D. Field Shirt</h3><p>Black department shirt featuring the DrewPID insignia.</p><button class="button shop-button" type="button" data-product="P.I.D. Field Shirt">COMING SOON</button></div>
-      </article>
-      <article class="shop-card">
-        <div class="shop-art mug-art" aria-hidden="true"><span>069</span></div>
-        <div class="shop-copy"><div class="shop-file">ITEM 002</div><h3>Agent Drew Mug</h3><p>For coffee, cold cases and long nights staring into the void.</p><button class="button shop-button" type="button" data-product="Agent Drew Mug">COMING SOON</button></div>
-      </article>
-      <article class="shop-card">
-        <div class="shop-art print-art" aria-hidden="true"><span>CLASSIFIED</span></div>
-        <div class="shop-copy"><div class="shop-file">ITEM 003</div><h3>Case Evidence Print</h3><p>A limited evidence-style art print from the DrewPID archive.</p><button class="button shop-button" type="button" data-product="Case Evidence Print">COMING SOON</button></div>
-      </article>
-    </div>
-    <p class="shop-note reveal">Purchase buttons are ready to be replaced with Shopify Buy Buttons when the products are listed.</p>
-  </div>
-</section>
 
 <section id="enquiries">
       <div class="wrap">
@@ -2890,6 +2881,11 @@
               <span>P.I.D. ARCHIVES</span>
             </button>
 
+            <button class="win95-icon" id="pidSuppliesIcon" type="button" aria-label="Open P.I.D. Supplies">
+              <span class="win95-glyph supplies-glyph" aria-hidden="true"></span>
+              <span>P.I.D. SUPPLIES</span>
+            </button>
+
             <button class="win95-icon" id="u4iaIcon" type="button" aria-label="Open U4IA Instagram">
               <img class="u4ia-glyph" src="u4ia.png" alt="">
               <span>U4IA</span>
@@ -2911,6 +2907,41 @@
             <div class="win95-statusbar">1 object(s)</div>
           </div>
 
+
+
+          <div class="win95-window supplies-window" id="pidSuppliesWindow" hidden>
+            <div class="win95-titlebar">
+              <span>P.I.D. SUPPLIES</span>
+              <button class="win95-close" id="closePidSuppliesWindow" type="button" aria-label="Close P.I.D. Supplies">×</button>
+            </div>
+            <div class="win95-menubar">File&nbsp;&nbsp; View&nbsp;&nbsp; Equipment&nbsp;&nbsp; Help</div>
+            <div class="supplies-body">
+              <div class="supplies-heading">DREWPID MERCHANDISE</div>
+              <div class="supplies-grid">
+                <article class="supply-item">
+                  <div class="supply-icon shirt-supply" aria-hidden="true">P.I.D.</div>
+                  <strong>DrewPID Shirt</strong>
+                  <button type="button" class="win95-button supply-buy">COMING SOON</button>
+                </article>
+                <article class="supply-item">
+                  <div class="supply-icon mug-supply" aria-hidden="true">069</div>
+                  <strong>DrewPID Mug</strong>
+                  <button type="button" class="win95-button supply-buy">COMING SOON</button>
+                </article>
+                <article class="supply-item">
+                  <div class="supply-icon pin-supply" aria-hidden="true">PID</div>
+                  <strong>DrewPID Enamel Pin</strong>
+                  <button type="button" class="win95-button supply-buy">COMING SOON</button>
+                </article>
+                <article class="supply-item">
+                  <div class="supply-icon art-supply" aria-hidden="true">ART</div>
+                  <strong>DrewPID Art</strong>
+                  <button type="button" class="win95-button supply-buy">COMING SOON</button>
+                </article>
+              </div>
+            </div>
+            <div class="win95-statusbar">4 item(s) available soon</div>
+          </div>
 
           <div class="win95-window desktop-ai-window" id="pidAiWindow" hidden>
             <div class="win95-titlebar">
@@ -4744,6 +4775,95 @@ Deleted.`
   const shut=()=>{win.hidden=true};
   icon.addEventListener('click',open);
   close?.addEventListener('click',shut);
+})();
+</script>
+
+
+<script>
+(() => {
+  const desktop = document.getElementById('win95Desktop');
+  const iconArea = desktop?.querySelector('.desktop-icons');
+  const suppliesIcon = document.getElementById('pidSuppliesIcon');
+  const suppliesWindow = document.getElementById('pidSuppliesWindow');
+  const suppliesClose = document.getElementById('closePidSuppliesWindow');
+
+  if (suppliesIcon && suppliesWindow) {
+    const openSupplies = () => {
+      suppliesWindow.hidden = false;
+      suppliesWindow.style.zIndex = String(Date.now() % 100000 + 100);
+    };
+    suppliesIcon.addEventListener('dblclick', openSupplies);
+    suppliesIcon.addEventListener('click', () => {
+      document.querySelectorAll('.win95-icon.selected').forEach(icon => icon.classList.remove('selected'));
+      suppliesIcon.classList.add('selected');
+    });
+    suppliesClose?.addEventListener('click', () => suppliesWindow.hidden = true);
+  }
+
+  if (!desktop || !iconArea) return;
+
+  const icons = [...iconArea.querySelectorAll('.win95-icon:not(.recycle-position)')];
+  const storageKey = 'drewpidDesktopIconPositionsV1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) {}
+
+  icons.forEach((icon, index) => {
+    const fallbackColumn = index % 4;
+    const fallbackRow = Math.floor(index / 4);
+    const position = saved[icon.id] || { left: fallbackColumn * 100, top: fallbackRow * 100 };
+
+    icon.classList.add('desktop-free');
+    icon.style.left = `${position.left}px`;
+    icon.style.top = `${position.top}px`;
+
+    icon.addEventListener('pointerdown', event => {
+      if (event.button !== undefined && event.button !== 0) return;
+      const area = iconArea.getBoundingClientRect();
+      const rect = icon.getBoundingClientRect();
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const startLeft = rect.left - area.left;
+      const startTop = rect.top - area.top;
+      let moved = false;
+
+      icon.classList.add('dragging');
+      icon.setPointerCapture?.(event.pointerId);
+
+      const move = e => {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (Math.abs(dx) + Math.abs(dy) > 5) moved = true;
+        const maxLeft = Math.max(0, iconArea.clientWidth - icon.offsetWidth);
+        const maxTop = Math.max(0, iconArea.clientHeight - icon.offsetHeight);
+        icon.style.left = `${Math.min(maxLeft, Math.max(0, startLeft + dx))}px`;
+        icon.style.top = `${Math.min(maxTop, Math.max(0, startTop + dy))}px`;
+      };
+
+      const end = () => {
+        icon.classList.remove('dragging');
+        icon.removeEventListener('pointermove', move);
+        icon.removeEventListener('pointerup', end);
+        icon.removeEventListener('pointercancel', end);
+        if (moved) {
+          saved[icon.id] = { left: parseFloat(icon.style.left) || 0, top: parseFloat(icon.style.top) || 0 };
+          try { localStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_) {}
+          icon.dataset.justDragged = 'true';
+          setTimeout(() => delete icon.dataset.justDragged, 180);
+        }
+      };
+
+      icon.addEventListener('pointermove', move);
+      icon.addEventListener('pointerup', end);
+      icon.addEventListener('pointercancel', end);
+    });
+
+    icon.addEventListener('dblclick', event => {
+      if (icon.dataset.justDragged === 'true') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, true);
+  });
 })();
 </script>
 
