@@ -2267,6 +2267,29 @@
 .desktop-ai-body .ai-log{min-height:250px;max-height:300px}
 @media(max-width:650px){.eggs-single-stage{grid-template-columns:38px minmax(0,1fr) 38px;gap:5px}.eggs-nav{width:36px;height:50px}.eggs-photo-overlay{grid-template-columns:42px minmax(0,1fr) 42px;gap:3px;padding:10px}.eggs-photo-overlay img{max-width:calc(100vw - 92px)}.desktop-ai-window{height:calc(100% - 42px)}}
 
+
+/* Window polish, dragging and shop */
+.win95-window{touch-action:none;max-width:calc(100% - 18px);max-height:calc(100% - 54px);z-index:30}
+.win95-window.active-window{z-index:80}
+.win95-titlebar{cursor:move;user-select:none;-webkit-user-select:none;touch-action:none}
+.win95-close{position:relative;z-index:5;min-width:28px;min-height:26px;display:grid;place-items:center;font-weight:900;cursor:pointer}
+.desktop-ai-window{width:min(720px,calc(100% - 34px));height:min(490px,calc(100% - 76px));left:50%;top:46%;transform:translate(-50%,-50%)}
+.desktop-ai-window .desktop-ai-body{height:calc(100% - 50px);overflow:auto;min-height:0}
+.desktop-ai-window .ai-shell{min-height:100%;height:auto;padding-bottom:18px}
+.shop-section{padding:90px 0;background:linear-gradient(180deg,#111 0%,#191714 100%);border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+.shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:34px}
+.shop-card{background:#d7cfba;color:#18130f;border:1px solid #746b5b;box-shadow:9px 10px 0 rgba(0,0,0,.28);transform:rotate(-.35deg);overflow:hidden}
+.shop-card:nth-child(2){transform:rotate(.45deg)}.shop-card:nth-child(3){transform:rotate(-.2deg)}
+.shop-art{height:240px;display:grid;place-items:center;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 5px),#20201d;border-bottom:8px solid #b31f28;position:relative}
+.shop-art span{font-family:"Courier New",monospace;font-weight:900;letter-spacing:.12em;color:#eee;text-shadow:3px 3px #000}
+.shirt-art:before{content:"";width:145px;height:155px;background:#090909;clip-path:polygon(25% 0,40% 9%,60% 9%,75% 0,100% 19%,83% 39%,75% 31%,75% 100%,25% 100%,25% 31%,17% 39%,0 19%)}
+.shirt-art span{position:absolute;font-size:1.25rem}.mug-art:before{content:"";width:140px;height:130px;border-radius:8px 8px 18px 18px;background:#e8e2d2;box-shadow:inset 0 -14px rgba(0,0,0,.12)}
+.mug-art:after{content:"";position:absolute;width:55px;height:72px;border:15px solid #e8e2d2;border-left:0;border-radius:0 40px 40px 0;transform:translateX(88px)}
+.mug-art span{position:absolute;color:#a71922;text-shadow:none;font-size:1.8rem}.print-art:before{content:"";width:150px;height:180px;background:#e9e1cb;border:10px solid #eee;box-shadow:8px 10px 0 #050505;transform:rotate(-4deg)}
+.print-art span{position:absolute;color:#a71922;border:4px solid #a71922;padding:6px;transform:rotate(-8deg)}
+.shop-copy{padding:22px}.shop-file{font:.75rem "Courier New",monospace;letter-spacing:.14em;color:#7c171d}.shop-copy h3{margin:8px 0 10px;font-size:1.35rem}.shop-copy p{min-height:54px}.shop-button{width:100%;margin-top:12px}.shop-note{text-align:center;margin:28px auto 0;opacity:.68;font-family:"Courier New",monospace;font-size:.82rem}
+@media(max-width:760px){.shop-grid{grid-template-columns:1fr}.shop-art{height:210px}.desktop-ai-window{position:absolute!important;left:8px!important;right:8px!important;top:8px!important;width:auto!important;height:calc(100% - 58px)!important;max-height:none!important;transform:none!important}.desktop-ai-window .win95-titlebar{position:sticky;top:0;z-index:20}.desktop-ai-window .win95-close{min-width:38px;min-height:34px;font-size:22px}.desktop-ai-window .desktop-ai-body{height:calc(100% - 58px);overflow:auto}.desktop-ai-window .ai-form{grid-template-columns:1fr}.desktop-ai-window .ai-submit{min-height:52px}.desktop-ai-window .ai-prompts{grid-template-columns:1fr}.win95-window{max-width:calc(100% - 10px)}}
+
 </style>
 </head>
 <body>
@@ -2339,6 +2362,7 @@
         <a href="#agent">Agent Drew</a>
         <a href="#cases">Case Files</a>
         <a href="#computer">Computer</a>
+        <a href="#shop">Shop</a>
         <a href="#enquiries">Enquiries</a>
 <a href="#call-agent">Call Agent Drew</a>
 
@@ -2651,6 +2675,32 @@
   </div>
 </section>
 
+
+<section id="shop" class="shop-section">
+  <div class="wrap">
+    <div class="section-heading reveal">
+      <div class="kicker">Department issue // civilian release</div>
+      <h2>DrewPID Shop</h2>
+      <p class="copy">Official field equipment, suspicious apparel and objects of questionable investigative value.</p>
+    </div>
+    <div class="shop-grid reveal">
+      <article class="shop-card">
+        <div class="shop-art shirt-art" aria-hidden="true"><span>P.I.D.</span></div>
+        <div class="shop-copy"><div class="shop-file">ITEM 001</div><h3>P.I.D. Field Shirt</h3><p>Black department shirt featuring the DrewPID insignia.</p><button class="button shop-button" type="button" data-product="P.I.D. Field Shirt">COMING SOON</button></div>
+      </article>
+      <article class="shop-card">
+        <div class="shop-art mug-art" aria-hidden="true"><span>069</span></div>
+        <div class="shop-copy"><div class="shop-file">ITEM 002</div><h3>Agent Drew Mug</h3><p>For coffee, cold cases and long nights staring into the void.</p><button class="button shop-button" type="button" data-product="Agent Drew Mug">COMING SOON</button></div>
+      </article>
+      <article class="shop-card">
+        <div class="shop-art print-art" aria-hidden="true"><span>CLASSIFIED</span></div>
+        <div class="shop-copy"><div class="shop-file">ITEM 003</div><h3>Case Evidence Print</h3><p>A limited evidence-style art print from the DrewPID archive.</p><button class="button shop-button" type="button" data-product="Case Evidence Print">COMING SOON</button></div>
+      </article>
+    </div>
+    <p class="shop-note reveal">Purchase buttons are ready to be replaced with Shopify Buy Buttons when the products are listed.</p>
+  </div>
+</section>
+
 <section id="enquiries">
       <div class="wrap">
         <div class="enquiry-shell reveal">
@@ -2813,11 +2863,7 @@
         <div class="win95-desktop" id="win95Desktop">
             <div id="drawDrewDesktopFiles" aria-label="Saved Draw a Drew files"></div>
           <div class="desktop-icons" aria-label="Desktop files and folders">
-            <button class="win95-icon" id="caseFilesFolder" type="button" aria-label="Open case files folder">
-              <span class="win95-glyph folder-glyph"></span>
-              <span>CASE FILES</span>
-            </button>
-            <button class="win95-icon" id="videoArchiveFile" type="button" aria-label="Open surveillance video file">
+<button class="win95-icon" id="videoArchiveFile" type="button" aria-label="Open surveillance video file">
               <span class="win95-glyph video-glyph"></span>
               <span>CAM_03.VID</span>
             </button>
@@ -3016,8 +3062,7 @@ Ask about EGGS, Nathan Frek, Derek S. Farmer, the Cracking Eggs investigation, d
           <div class="start-menu" id="startMenu" hidden>
             <div class="start-side">DREW<span>PID</span></div>
             <div class="start-items">
-              <button type="button" id="startCases">📁 Case Files</button>
-              <button type="button" id="startPongMenu">🎮 Drew Pong</button>
+<button type="button" id="startPongMenu">🎮 Drew Pong</button>
               <button type="button" id="startRecycle">🗑 Recycle Bin</button>
               <div class="start-separator"></div>
               <button type="button" id="startShutdown">⏻ Shut Down...</button>
@@ -3764,6 +3809,7 @@ The department prefers silence to invention. Ask again using a case name, suspec
   render();
 })();
 
+(() => {
   const photo = document.getElementById('elwoodPolaroid');
   const overlay = document.getElementById('elwoodPhotoOverlay');
   const close = document.getElementById('elwoodPhotoClose');
@@ -3984,7 +4030,7 @@ The department prefers silence to invention. Ask again using a case name, suspec
     status.textContent = label + ' selected. Double-click to open.';
   }
   function hideDesktopWindows() {
-    folderWindow.hidden = true;
+    if (folderWindow) folderWindow.hidden = true;
     drawDrewWindow.hidden = true;
     recycleWindow.hidden = true;
     documentWindow.hidden = true;
@@ -3999,9 +4045,6 @@ The department prefers silence to invention. Ask again using a case name, suspec
   }
   file.addEventListener('click', () => selectIcon(file, 'CAM_03.VID'));
   file.addEventListener('dblclick', () => { hideDesktopWindows(); show(player); });
-  const cases = document.getElementById('caseFilesFolder');
-  cases.addEventListener('click', () => selectIcon(cases, 'CASE FILES'));
-  cases.addEventListener('dblclick', () => openFolder('CASE FILES', '<div class="window-file-row"><span class="win95-glyph folder-glyph"></span><span>CRACKING EGGS</span></div><p style="color:#555;margin:12px 6px">Additional case files can be added here later.</p>'));
   const notes = document.getElementById('notesFolder');
   notes.addEventListener('click', () => selectIcon(notes, 'FIELD NOTES'));
   notes.addEventListener('dblclick', () => openFolder('FIELD NOTES', '<div class="window-file-row"><span class="win95-glyph folder-glyph"></span><span>AGENT DREW NOTES</span></div><p style="color:#555;margin:12px 6px">Folder currently contains no readable documents.</p>'));
@@ -4306,8 +4349,6 @@ Deleted.`
     const willOpen = startMenu.hidden;
     startMenu.hidden = !willOpen;
   });
-  document.getElementById('startCases').addEventListener('click', () => {
-    startMenu.hidden = true;
     openFolder('CASE FILES', '<div class="window-file-row"><span class="win95-glyph folder-glyph"></span><span>CRACKING EGGS</span></div><p style="color:#555;margin:12px 6px">Additional case files can be added here later.</p>');
   });
   document.getElementById('startPongMenu').addEventListener('click', () => {
@@ -4496,6 +4537,54 @@ Deleted.`
     if (e.target === magicWordOverlay) closePasswordVideo();
   });
   modal.addEventListener('click', e => { if(e.target === modal) closeComputer(); });
+  
+  // Make Windows 95 panels draggable with mouse or touch.
+  (() => {
+    const desktopArea = document.getElementById('win95Desktop');
+    if (!desktopArea) return;
+    let topZ = 90;
+    const windows = [...desktopArea.querySelectorAll('.win95-window')];
+    windows.forEach(win => {
+      const bar = win.querySelector('.win95-titlebar');
+      if (!bar) return;
+      win.addEventListener('pointerdown', () => {
+        windows.forEach(w => w.classList.remove('active-window'));
+        win.classList.add('active-window');
+        win.style.zIndex = String(++topZ);
+      });
+      bar.addEventListener('pointerdown', event => {
+        if (event.target.closest('button')) return;
+        event.preventDefault();
+        const areaRect = desktopArea.getBoundingClientRect();
+        const rect = win.getBoundingClientRect();
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const initialLeft = rect.left - areaRect.left;
+        const initialTop = rect.top - areaRect.top;
+        win.style.transform = 'none';
+        win.style.left = initialLeft + 'px';
+        win.style.top = initialTop + 'px';
+        bar.setPointerCapture?.(event.pointerId);
+        const move = e => {
+          const maxLeft = Math.max(0, desktopArea.clientWidth - win.offsetWidth);
+          const maxTop = Math.max(0, desktopArea.clientHeight - win.offsetHeight - 40);
+          const left = Math.min(maxLeft, Math.max(0, initialLeft + e.clientX - startX));
+          const top = Math.min(maxTop, Math.max(0, initialTop + e.clientY - startY));
+          win.style.left = left + 'px';
+          win.style.top = top + 'px';
+        };
+        const end = () => {
+          bar.removeEventListener('pointermove', move);
+          bar.removeEventListener('pointerup', end);
+          bar.removeEventListener('pointercancel', end);
+        };
+        bar.addEventListener('pointermove', move);
+        bar.addEventListener('pointerup', end);
+        bar.addEventListener('pointercancel', end);
+      });
+    });
+  })();
+
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (magicWordOverlay.classList.contains('open')) {
