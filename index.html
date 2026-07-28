@@ -4893,6 +4893,12 @@ Deleted.`
     }
 
     function openTerminal(event) {
+      // The Elwood Polaroid sits inside the computer artwork. Do not let the
+      // computer's capture-phase failsafe steal clicks intended for Elwood.
+      if (event && event.target && event.target.closest('#elwoodPolaroid')) {
+        return;
+      }
+
       if (event) {
         event.preventDefault();
         event.stopPropagation();
