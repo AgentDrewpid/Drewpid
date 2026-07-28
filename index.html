@@ -4867,6 +4867,37 @@ Deleted.`
 })();
 </script>
 
+
+<script>
+/* Reliable desktop app launcher.
+   Desktop apps open with one click/tap, while dragged icons do not open accidentally. */
+(() => {
+  const appIconIds = ['drawADrewIcon', 'pongFile', 'pidSuppliesIcon'];
+
+  appIconIds.forEach(id => {
+    const icon = document.getElementById(id);
+    if (!icon) return;
+
+    icon.addEventListener('click', event => {
+      if (icon.dataset.justDragged === 'true' || icon.classList.contains('dragging')) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+
+      window.setTimeout(() => {
+        if (icon.dataset.justDragged === 'true') return;
+        icon.dispatchEvent(new MouseEvent('dblclick', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        }));
+      }, 0);
+    });
+  });
+})();
+</script>
+
 <script>
 /* DrewPID computer access failsafe.
    Kept independent so the terminal can still open if another desktop app errors. */
