@@ -4746,5 +4746,85 @@ Deleted.`
   close?.addEventListener('click',shut);
 })();
 </script>
+
+<script>
+/* DrewPID computer access failsafe.
+   Kept independent so the terminal can still open if another desktop app errors. */
+(() => {
+  function bindComputerAccess() {
+    const modal = document.getElementById('computerModal');
+    const login = document.getElementById('computerLogin');
+    const desktop = document.getElementById('computerDesktop');
+    const player = document.getElementById('computerPlayer');
+    const password = document.getElementById('computerPassword');
+    const message = document.getElementById('computerMessage');
+    const visual = document.getElementById('computerVisual');
+    const powerButton = document.getElementById('openComputer');
+    const closeButton = document.getElementById('closeComputer');
+    const enterButton = document.getElementById('computerEnter');
+
+    if (!modal || !login || !password) return;
+
+    function showLogin() {
+      [login, desktop, player].forEach(view => {
+        if (view) view.classList.remove('active');
+      });
+      login.classList.add('active');
+    }
+
+    function openTerminal(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      showLogin();
+      password.value = '';
+      password.disabled = false;
+
+      if (enterButton) enterButton.disabled = false;
+      if (message) {
+        message.textContent = '';
+        message.classList.remove('boot-sequence');
+      }
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      window.setTimeout(() => password.focus(), 100);
+    }
+
+    function closeTerminal(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      showLogin();
+    }
+
+    [visual, powerButton].forEach(control => {
+      if (!control || control.dataset.computerFailsafeBound === 'true') return;
+      control.dataset.computerFailsafeBound = 'true';
+      control.addEventListener('click', openTerminal, true);
+      control.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') openTerminal(event);
+      }, true);
+    });
+
+    if (closeButton && closeButton.dataset.computerFailsafeBound !== 'true') {
+      closeButton.dataset.computerFailsafeBound = 'true';
+      closeButton.addEventListener('click', closeTerminal, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindComputerAccess, { once: true });
+  } else {
+    bindComputerAccess();
+  }
+})();
+</script>
+
 </body>
 </html>
