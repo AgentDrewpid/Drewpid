@@ -2368,6 +2368,29 @@ canvas,
   }
 }
 
+
+.drewpid-gallery-card[hidden] { display: none !important; }
+.drewpid-gallery-card.gallery-revealed { animation: galleryFileReveal .65s steps(6,end); }
+@keyframes galleryFileReveal {
+  0% { opacity:0; transform:translateY(14px); filter:blur(2px); }
+  55% { opacity:.65; }
+  100% { opacity:1; transform:translateY(0); filter:none; }
+}
+#pongSecretReveal .secret-message-text strong {
+  display:block;
+  margin-top:12px;
+  font-size:clamp(2.2rem,10vw,4.8rem);
+  letter-spacing:.18em;
+  color:#d8ffd8;
+  text-shadow:0 0 9px rgba(170,255,170,.75);
+}
+.drewpid-gallery-viewer img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#171713;
+}
+
 </style>
 </head>
 <body>
@@ -2559,6 +2582,18 @@ canvas,
             <span>Access: Restricted</span>
           </div>
           <div class="lock-icon" aria-hidden="true">⌾</div>
+        </article>
+
+        <article class="case-file-card reveal drewpid-gallery-card" id="drewpidGalleryCard" tabindex="0" role="button" aria-label="Open DrewPID Gallery" hidden>
+          <div class="case-status">Secret files unlocked</div>
+          <h3>DrewPID Gallery</h3>
+          <p>Case 003. A recovered archive of DrewPID photographs and visual records.</p>
+          <div class="case-meta">
+            <span>Status: Unlocked</span>
+            <span>Agent: Drew</span>
+            <span>Access: Granted</span>
+          </div>
+          <div class="lock-icon" aria-hidden="true">◉</div>
         </article>
       </div>
     </section>
@@ -2817,6 +2852,28 @@ canvas,
   </main>
 
   
+    <div class="classified-case" id="drewpidGalleryCase" aria-hidden="true">
+      <button class="case-close" id="closeDrewpidGallery">Close file</button>
+      <article class="case-sheet">
+        <div class="section-number" style="color:#761a20;">Case 003 // Secret archive</div>
+        <h2>DrewPID Gallery</h2>
+        <p><strong>Status:</strong> Unlocked &nbsp; | &nbsp; <strong>Archive:</strong> Visual records</p>
+
+        <section class="eggs-evidence-viewer drewpid-gallery-viewer" aria-label="DrewPID photograph gallery">
+          <div class="eggs-field-heading">DREWPID PHOTOGRAPH ARCHIVE</div>
+          <div class="eggs-hand-note">PID</div>
+          <div class="eggs-single-stage">
+            <button class="eggs-nav eggs-prev" id="drewpidGalleryPrev" type="button" aria-label="Previous DrewPID photograph">‹</button>
+            <button class="eggs-single-photo" id="drewpidGalleryPhotoButton" type="button" aria-label="Enlarge current DrewPID photograph">
+              <img id="drewpidGalleryImage" alt="DrewPID gallery photograph">
+            </button>
+            <button class="eggs-nav eggs-next" id="drewpidGalleryNext" type="button" aria-label="Next DrewPID photograph">›</button>
+          </div>
+          <div class="eggs-evidence-counter" id="drewpidGalleryCounter">PHOTO 01 / 04</div>
+        </section>
+      </article>
+    </div>
+
     <div class="classified-case" id="classifiedCaseTwo" aria-hidden="true">
       <button class="case-close" id="closeCaseTwo">Close file</button>
       <article class="case-sheet">
@@ -3136,7 +3193,7 @@ Ask about EGGS, Nathan Frek, Derek S. Farmer, the Cracking Eggs investigation, d
               <canvas id="pongCanvas" width="640" height="360" aria-label="Drew themed Pong game"></canvas>
               <div class="pong-secret-reveal" id="pongSecretReveal" hidden>
                 <div class="secret-static"></div>
-                <div class="secret-message-text">SECRET MESSAGE</div>
+                <div class="secret-message-text">SECRET PHONE EXTENSION<br><strong>1984</strong></div>
                 <button class="win95-button" id="closeSecretReveal" type="button">RETURN TO DESKTOP</button>
               </div>
               <div class="pong-lose-reveal" id="pongLoseReveal" hidden>
@@ -3318,6 +3375,88 @@ Ask about EGGS, Nathan Frek, Derek S. Farmer, the Cracking Eggs investigation, d
     ethanFrankCard.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") openAccess("ethan");
     });
+
+
+    const drewpidGalleryCard = document.getElementById("drewpidGalleryCard");
+    const drewpidGalleryCase = document.getElementById("drewpidGalleryCase");
+    const drewpidGalleryImage = document.getElementById("drewpidGalleryImage");
+    const drewpidGalleryCounter = document.getElementById("drewpidGalleryCounter");
+    const drewpidGalleryPhotoButton = document.getElementById("drewpidGalleryPhotoButton");
+
+    const drewpidGalleryPhotos = [
+      { src: "", label: "DREWPID PHOTO 01" },
+      { src: "", label: "DREWPID PHOTO 02" },
+      { src: "", label: "DREWPID PHOTO 03" },
+      { src: "", label: "DREWPID PHOTO 04" }
+    ];
+
+    let drewpidGalleryIndex = 0;
+    let drewpidGalleryTouchStartX = 0;
+
+    function galleryPlaceholder(label) {
+      const safeLabel = String(label).replace(/[<>&"]/g, "");
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
+        <rect width="1200" height="800" fill="#171713"/>
+        <rect x="42" y="42" width="1116" height="716" fill="#d9d0bb" stroke="#751b20" stroke-width="10"/>
+        <text x="600" y="360" text-anchor="middle" fill="#751b20" font-family="Georgia,serif" font-size="64" font-weight="bold">${safeLabel}</text>
+        <text x="600" y="445" text-anchor="middle" fill="#29251f" font-family="monospace" font-size="30">ADD IMAGE FILE LATER</text>
+      </svg>`;
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    }
+
+    function renderDrewpidGalleryPhoto() {
+      const photo = drewpidGalleryPhotos[drewpidGalleryIndex];
+      drewpidGalleryImage.src = photo.src || galleryPlaceholder(photo.label);
+      drewpidGalleryImage.alt = photo.label;
+      drewpidGalleryCounter.textContent =
+        `PHOTO ${String(drewpidGalleryIndex + 1).padStart(2, "0")} / ${String(drewpidGalleryPhotos.length).padStart(2, "0")}`;
+    }
+
+    function moveDrewpidGallery(direction) {
+      drewpidGalleryIndex =
+        (drewpidGalleryIndex + direction + drewpidGalleryPhotos.length) %
+        drewpidGalleryPhotos.length;
+      renderDrewpidGalleryPhoto();
+    }
+
+    function openDrewpidGallery() {
+      if (!drewpidGalleryUnlocked) return;
+      drewpidGalleryCase.classList.add("open");
+      drewpidGalleryCase.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      renderDrewpidGalleryPhoto();
+    }
+
+    drewpidGalleryCard.addEventListener("click", openDrewpidGallery);
+    drewpidGalleryCard.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openDrewpidGallery();
+      }
+    });
+
+    document.getElementById("closeDrewpidGallery").addEventListener("click", () => {
+      drewpidGalleryCase.classList.remove("open");
+      drewpidGalleryCase.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    });
+
+    document.getElementById("drewpidGalleryPrev").addEventListener("click", () => moveDrewpidGallery(-1));
+    document.getElementById("drewpidGalleryNext").addEventListener("click", () => moveDrewpidGallery(1));
+
+    drewpidGalleryPhotoButton.addEventListener("click", () => {
+      drewpidGalleryPhotoButton.classList.toggle("enlarged");
+    });
+
+    drewpidGalleryPhotoButton.addEventListener("touchstart", event => {
+      drewpidGalleryTouchStartX = event.changedTouches[0].clientX;
+    }, { passive:true });
+
+    drewpidGalleryPhotoButton.addEventListener("touchend", event => {
+      const distance = event.changedTouches[0].clientX - drewpidGalleryTouchStartX;
+      if (Math.abs(distance) < 45) return;
+      moveDrewpidGallery(distance < 0 ? 1 : -1);
+    }, { passive:true });
 
     document.getElementById("closeAccess").addEventListener("click", closeAccess);
     document.getElementById("closeCase").addEventListener("click", () => {
@@ -3639,6 +3778,9 @@ The department prefers silence to invention. Ask again using a case name, suspec
     });
 
 
+    const galleryCardAtLoad = document.getElementById("drewpidGalleryCard");
+    if (galleryCardAtLoad) galleryCardAtLoad.hidden = true;
+
     const phoneKeys = document.querySelectorAll(".phone-key");
     const phoneNumber = document.getElementById("phoneNumber");
     const phoneStatus = document.getElementById("phoneStatus");
@@ -3657,6 +3799,8 @@ The department prefers silence to invention. Ask again using a case name, suspec
     const drewSwearNumber = "0434123315";
     const secretImageNumber = "0422278023";
     const ethanAccessNumber = "0451404132";
+    const drewpidGalleryNumber = "1984";
+    let drewpidGalleryUnlocked = false;
 
     function formatPhoneNumber(value) {
       if (!value) return "_";
@@ -3739,6 +3883,25 @@ The department prefers silence to invention. Ask again using a case name, suspec
         } catch (error) {
           phoneStatus.textContent = "Press Call again";
         }
+      } else if (dialledNumber === drewpidGalleryNumber) {
+        phoneStatus.textContent = "VERIFYING...";
+        callIndicator.textContent = "Secret extension recognised.";
+        callIndicator.classList.add("visible");
+
+        setTimeout(() => {
+          drewpidGalleryUnlocked = true;
+          const galleryCard = document.getElementById("drewpidGalleryCard");
+          galleryCard.hidden = false;
+          galleryCard.classList.remove("gallery-revealed");
+          void galleryCard.offsetWidth;
+          galleryCard.classList.add("gallery-revealed");
+
+          playCaseAccessSound(correctCaseCodeSound);
+          phoneStatus.textContent = "FILES UNLOCKED";
+          phoneNumber.textContent = "SECRET DREWPID";
+          callIndicator.textContent = "SECRET DREWPID FILES UNLOCKED";
+          callIndicator.classList.add("visible");
+        }, 850);
       } else if (dialledNumber === ethanAccessNumber) {
         phoneStatus.textContent = "Connecting...";
         callIndicator.textContent = "Ethan Frank line reached.";
