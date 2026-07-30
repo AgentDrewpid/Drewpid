@@ -2463,6 +2463,40 @@ canvas,
   }
 }
 
+
+/* Fully disable browser text editing/selection while using Pong */
+#pongWindow,
+#pongWindow *,
+#pongCanvas,
+.pong-stage,
+.pong-toolbar,
+.pong-mobile-controls,
+.pong-touch-button {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  caret-color: transparent !important;
+}
+
+#pongWindow,
+#pongCanvas,
+.pong-stage,
+.pong-mobile-controls,
+.pong-touch-button {
+  touch-action: none !important;
+  overscroll-behavior: contain;
+}
+
+#pongWindow img,
+#pongWindow canvas {
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  pointer-events: auto;
+}
+
 </style>
 </head>
 <body>
@@ -5315,6 +5349,91 @@ Deleted.`
       event.preventDefault();
     }
   });
+})();
+</script>
+
+
+<script>
+/* Pong mobile interaction shield */
+(() => {
+  const isInsidePong = target =>
+    target instanceof Element &&
+    Boolean(target.closest('#pongWindow, #pongCanvas, .pong-stage, .pong-mobile-controls, .pong-touch-button'));
+
+  const clearBrowserSelection = () => {
+    const selection = window.getSelection?.();
+    if (selection && selection.rangeCount) selection.removeAllRanges();
+
+    const active = document.activeElement;
+    if (
+      active &&
+      active instanceof HTMLElement &&
+      active.closest('#pongWindow') &&
+      !active.matches('button')
+    ) {
+      active.blur();
+    }
+  };
+
+  // Stop text selection, editing handles, drag ghosts and long-press menus.
+  ['selectionstart', 'contextmenu', 'dragstart', 'copy', 'cut'].forEach(type => {
+    document.addEventListener(type, event => {
+      if (!isInsidePong(event.target)) return;
+      event.preventDefault();
+      clearBrowserSelection();
+    }, { capture: true, passive: false });
+  });
+
+  // Prevent double-tap zoom and mobile press-and-hold selection without
+  // blocking the game's own pointer handlers.
+  document.addEventListener('pointerdown', event => {
+    if (!isInsidePong(event.target)) return;
+    event.preventDefault();
+    clearBrowserSelection();
+  }, { capture: true, passive: false });
+
+  document.addEventListener('pointermove', event => {
+    if (!isInsidePong(event.target)) return;
+    if (event.pointerType === 'touch' || event.pointerType === 'pen') {
+      event.preventDefault();
+      clearBrowserSelection();
+    }
+  }, { capture: true, passive: false });
+
+  document.addEventListener('touchmove', event => {
+    if (!isInsidePong(event.target)) return;
+    event.preventDefault();
+    clearBrowserSelection();
+  }, { capture: true, passive: false });
+
+  document.addEventListener('dblclick', event => {
+    if (!isInsidePong(event.target)) return;
+    event.preventDefault();
+    clearBrowserSelection();
+  }, { capture: true, passive: false });
+
+  // Keep selection cleared while either mobile paddle button is held.
+  let selectionGuard = null;
+
+  const beginGuard = event => {
+    if (!isInsidePong(event.target)) return;
+    clearBrowserSelection();
+    if (selectionGuard) clearInterval(selectionGuard);
+    selectionGuard = setInterval(clearBrowserSelection, 80);
+  };
+
+  const endGuard = () => {
+    if (selectionGuard) {
+      clearInterval(selectionGuard);
+      selectionGuard = null;
+    }
+    clearBrowserSelection();
+  };
+
+  document.addEventListener('pointerdown', beginGuard, true);
+  document.addEventListener('pointerup', endGuard, true);
+  document.addEventListener('pointercancel', endGuard, true);
+  window.addEventListener('blur', endGuard);
 })();
 </script>
 
