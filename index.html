@@ -2391,6 +2391,78 @@ canvas,
   background:#171713;
 }
 
+
+/* Compact Pong victory screen */
+#pongSecretReveal {
+  place-content: center;
+  padding: clamp(18px, 4vh, 42px) clamp(14px, 4vw, 48px);
+  gap: clamp(10px, 2vh, 20px);
+  box-sizing: border-box;
+}
+
+#pongSecretReveal .secret-message-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.7vh, 16px);
+  width: min(100%, 760px);
+  max-height: 100%;
+  margin: auto;
+  font-size: clamp(.72rem, 2.2vw, 1.2rem);
+  line-height: 1.15;
+  letter-spacing: .13em;
+  box-sizing: border-box;
+}
+
+#pongSecretReveal .pong-access-line {
+  font-size: clamp(.68rem, 1.8vw, 1rem);
+  opacity: .82;
+}
+
+#pongSecretReveal .pong-secret-label {
+  display: block;
+  max-width: 100%;
+  font-size: clamp(1rem, 3.4vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: .12em;
+  white-space: normal;
+}
+
+#pongSecretReveal .secret-message-text strong {
+  display: block;
+  margin: 0;
+  font-size: clamp(3rem, 11vw, 6.5rem);
+  line-height: .95;
+  letter-spacing: .12em;
+}
+
+#pongSecretReveal .pong-dial-hint {
+  font-size: clamp(.58rem, 1.7vw, .92rem);
+  line-height: 1.25;
+  opacity: .78;
+}
+
+#closeSecretReveal {
+  flex: 0 0 auto;
+}
+
+@media (max-height: 520px) {
+  #pongSecretReveal {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    gap: 8px;
+  }
+
+  #pongSecretReveal .secret-message-text {
+    gap: 6px;
+  }
+
+  #pongSecretReveal .secret-message-text strong {
+    font-size: clamp(2.5rem, 14vh, 4.5rem);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3193,7 +3265,12 @@ Ask about EGGS, Nathan Frek, Derek S. Farmer, the Cracking Eggs investigation, d
               <canvas id="pongCanvas" width="640" height="360" aria-label="Drew themed Pong game"></canvas>
               <div class="pong-secret-reveal" id="pongSecretReveal" hidden>
                 <div class="secret-static"></div>
-                <div class="secret-message-text">SECRET PHONE EXTENSION<br><strong>1984</strong></div>
+                <div class="secret-message-text">
+                  <span class="pong-access-line">ACCESS GRANTED</span>
+                  <span class="pong-secret-label">SECRET PHONE EXTENSION</span>
+                  <strong>1984</strong>
+                  <span class="pong-dial-hint">DIAL USING AGENT DREW'S PHONE</span>
+                </div>
                 <button class="win95-button" id="closeSecretReveal" type="button">RETURN TO DESKTOP</button>
               </div>
               <div class="pong-lose-reveal" id="pongLoseReveal" hidden>
@@ -5298,6 +5375,22 @@ Deleted.`
         event.preventDefault();
         event.stopPropagation();
       }
+
+      password.value = '';
+      password.disabled = false;
+
+      if (enterButton) enterButton.disabled = false;
+      if (message) {
+        message.textContent = '';
+        message.classList.remove('boot-sequence');
+      }
+
+      document.querySelectorAll(
+        '#computerModal .desktop-window, #computerModal .pong-secret-reveal, #computerModal .pong-lose-reveal'
+      ).forEach(item => {
+        if ('hidden' in item) item.hidden = true;
+      });
+
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
       showLogin();
