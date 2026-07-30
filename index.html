@@ -2306,6 +2306,68 @@
 .shop-copy{padding:22px}.shop-file{font:.75rem "Courier New",monospace;letter-spacing:.14em;color:#7c171d}.shop-copy h3{margin:8px 0 10px;font-size:1.35rem}.shop-copy p{min-height:54px}.shop-button{width:100%;margin-top:12px}.shop-note{text-align:center;margin:28px auto 0;opacity:.68;font-family:"Courier New",monospace;font-size:.82rem}
 @media(max-width:760px){.shop-grid{grid-template-columns:1fr}.shop-art{height:210px}.desktop-ai-window{position:absolute!important;left:8px!important;right:8px!important;top:8px!important;width:auto!important;height:calc(100% - 58px)!important;max-height:none!important;transform:none!important}.desktop-ai-window .win95-titlebar{position:sticky;top:0;z-index:20}.desktop-ai-window .win95-close{min-width:38px;min-height:34px;font-size:22px}.desktop-ai-window .desktop-ai-body{height:calc(100% - 58px);overflow:auto}.desktop-ai-window .ai-form{grid-template-columns:1fr}.desktop-ai-window .ai-submit{min-height:52px}.desktop-ai-window .ai-prompts{grid-template-columns:1fr}.win95-window{max-width:calc(100% - 10px)}}
 
+
+/* Mobile interaction hardening */
+html,
+body {
+  touch-action: manipulation;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+canvas,
+.phone-key,
+.phone-call,
+.phone-clear,
+.win95-icon,
+.recycle-file,
+.pong-touch-button,
+#pongCanvas {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.phone-key,
+.phone-call,
+.phone-clear,
+.win95-icon,
+.recycle-file,
+.pong-touch-button,
+#pongCanvas,
+.pong-window,
+.pong-stage {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.phone-key,
+.phone-call,
+.phone-clear,
+.win95-icon,
+.recycle-file {
+  touch-action: manipulation;
+}
+
+.pong-touch-button,
+#pongCanvas,
+.pong-stage {
+  touch-action: none;
+}
+
+@media (hover:none), (pointer:coarse) {
+  .phone-key,
+  .phone-call,
+  .phone-clear,
+  .recycle-file,
+  .win95-icon,
+  .pong-touch-button {
+    cursor: pointer;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4894,6 +4956,124 @@ Deleted.`
         }));
       }, 0);
     });
+  });
+})();
+</script>
+
+
+<script>
+/* Mobile controls and Recycle Bin file fix */
+(() => {
+  // Open deleted files with one click or tap. This avoids unreliable
+  // double-tapping and the browser zoom gesture on phones.
+  document.querySelectorAll('.recycle-file').forEach(fileButton => {
+    fileButton.addEventListener('click', () => {
+      if (fileButton.dataset.justDragged === 'true') return;
+
+      const fileKey = fileButton.dataset.file;
+      const allFiles = {
+        ethan: {
+          title: 'Ethan Frank Leads.txt - Notepad',
+          type: 'text',
+          content: `ETHAN FRANK LEADS
+────────────────────────────
+
+Last reported Ethan Frank graffiti
+face painted on a wall in Logan City.
+
+Post Code:
+4132
+
+No photograph recovered.
+
+Case remains unsolved.`
+        },
+        egg: {
+          title: 'Egg Theory.txt - Notepad',
+          type: 'text',
+          content: `Egg Theory
+
+Eggs break easier than people think.
+
+Deleted.`
+        },
+        shopping: {
+          title: 'Shopping List.txt - Notepad',
+          type: 'text',
+          content: `Shopping List
+
+□ Ceramic tiles
+□ Mesh
+□ Glue
+□ Maltesers`
+        },
+        taxes: {
+          title: 'taxes.xls - Microsoft Excel',
+          type: 'sheet'
+        }
+      };
+
+      const fileData = allFiles[fileKey];
+      const documentWindow = document.getElementById('documentWindow');
+      const title = document.getElementById('documentWindowTitle');
+      const menu = document.getElementById('documentMenu');
+      const body = document.getElementById('documentWindowBody');
+      const status = document.getElementById('documentStatus');
+
+      if (!fileData || !documentWindow || !title || !menu || !body || !status) return;
+
+      title.textContent = fileData.title;
+
+      if (fileData.type === 'sheet') {
+        menu.innerHTML = 'File&nbsp;&nbsp; Edit&nbsp;&nbsp; View&nbsp;&nbsp; Insert&nbsp;&nbsp; Format&nbsp;&nbsp; Help';
+        status.textContent = 'SUM=0.00';
+        body.innerHTML = `
+          <table class="fake-sheet" aria-label="Discarded tax spreadsheet">
+            <thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead>
+            <tbody>
+              <tr><th class="row-head">1</th><td>ITEM</td><td>STATUS</td><td>AMOUNT</td></tr>
+              <tr><th class="row-head">2</th><td>Printer ink</td><td>Missing receipt</td><td class="money">$48.90</td></tr>
+              <tr><th class="row-head">3</th><td>Stakeout coffee</td><td>Questionable</td><td class="money">$126.40</td></tr>
+              <tr><th class="row-head">4</th><td>Binocular repairs</td><td>Pending</td><td class="money">$79.00</td></tr>
+              <tr><th class="row-head">5</th><td>Disguises</td><td>Rejected</td><td class="money">$214.50</td></tr>
+              <tr><th class="row-head">6</th><td></td><td>TOTAL</td><td class="money">$468.80</td></tr>
+            </tbody>
+          </table>`;
+      } else {
+        menu.innerHTML = 'File&nbsp;&nbsp; Edit&nbsp;&nbsp; Search&nbsp;&nbsp; Help';
+        status.textContent = 'Ready';
+        const pre = document.createElement('pre');
+        pre.className = 'notepad-text';
+        pre.textContent = fileData.content;
+        body.replaceChildren(pre);
+      }
+
+      documentWindow.hidden = false;
+      documentWindow.style.zIndex = String(Date.now() % 100000 + 120);
+    });
+  });
+
+  // Stop double-tap browser zoom on the interactive parts of DrewPID.
+  document.addEventListener('dblclick', event => {
+    if (event.target.closest(
+      '.phone-key, .phone-call, .phone-clear, .win95-icon, .recycle-file, .pong-touch-button, #pongCanvas'
+    )) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+
+  // Prevent the long-press copy/context menu from appearing during Pong.
+  document.addEventListener('contextmenu', event => {
+    if (event.target.closest('.pong-window, .pong-stage, .pong-touch-button, #pongCanvas')) {
+      event.preventDefault();
+    }
+  });
+
+  // Prevent dragging images or other browser-native drag behaviour inside Pong.
+  document.addEventListener('dragstart', event => {
+    if (event.target.closest('.pong-window, .pong-stage, .pong-touch-button, #pongCanvas')) {
+      event.preventDefault();
+    }
   });
 })();
 </script>
